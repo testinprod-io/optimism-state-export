@@ -6,7 +6,7 @@ TL;DR: Jump to [Game Plan](#game-plan)
 
 ## Historical data
 
-To build new execution client for OP stack, we must import historical data of optimism. Lets break down what exactly the history data means. The historical data consists of below segments:
+To build new execution client for OP stack, we must import historical data of optimism. Lets break down what exactly the history data means. The historical data consists of below segments.
 
 1. Block header
     - state root, transaction trie root, transaction receipt trie root is included
@@ -43,20 +43,25 @@ You may create the state dump using [public info](https://community.optimism.io/
 
 By using upper info, you must construct file which contains state trie to reconstruct world state trie for block 4061224, starting from bedrock. 
 
-Luckily, here is the `1.39G` json file which captures every info for recontructing world state trie for block 4061224. [alloc_everything_4061224_final.json](https://drive.google.com/file/d/1k9yopW6F8SyHAR-8JT2hfxptQGT-DqKe/view?usp=sharing). It was super painful to derive all the preimages! Detailed methodology will be added in this repo. The given json file follows the [genesis file structure](https://arvanaghi.com/blog/explaining-the-genesis-block-in-ethereum/).
+Luckily, here is the `1.39G` json file which captures every info for recontructing world state trie for block 4061224. [alloc_everything_4061224_final.json](https://drive.google.com/file/d/1k9yopW6F8SyHAR-8JT2hfxptQGT-DqKe/view?usp=sharing). It was super painful to derive all the preimages! In theory, every data to create this world state trie is included in bedrock data directory. However, we had some problems with state dump, so we also used legacy geth data directory to create the full world state trie. The given json file follows the [genesis file structure](https://arvanaghi.com/blog/explaining-the-genesis-block-in-ethereum/). Detailed steps to create this json will be added in this repo in the future.
+
+## Data Export
+
+All the data export artifacts will be shared asap. You do not have to follow steps. You can use files that we provided in the [game plan](#game-plan). We followed below steps because op-geth dump functionality is not working at the moment.
+
+1. Initialize your new OP stack execution engine's storage with the [optimism-goerli genesis file](https://github.com/testinprod-io/erigon/blob/pcw109550/state-import/state-import/genesis.json).
+2. Dump block headers and transactions from block number 1 to 4061224 from the archive. This can be done via l2geth's `export` command. RLP encoded file will be created.
+3. Dump transaction receipts from block 1 to 4061224 from the archive. I wrote the custom geth command `export-receipts` to do this. See [here](https://github.com/testinprod-io/optimism/commit/6c675653e5db865415d3260fce50f3d5c39c267e) for details. RLP encoded file will be created.
+4. Dump world state trie at block 4061224. [alloc_everything_4061224_final.json](https://drive.google.com/file/d/1k9yopW6F8SyHAR-8JT2hfxptQGT-DqKe/view?usp=sharing)
 
 ## Game Plan
 
-So, you must do the following.
-
-1. Initialize your new OP stack execution engine's storage with the [optimism-goerli genesis file](https://github.com/testinprod-io/erigon/blob/pcw109550/state-import/state-import/genesis.json).
-2. Dump block headers and transactions from block number 1 to 4061224 from the archive. This can be done via l2geth's `export` command. 
-3. Dump transaction receipts from block 1 to 4061224 from the archive. I wrote the custom geth command `export-receipts` to do this. See [here](https://github.com/testinprod-io/optimism/commit/6c675653e5db865415d3260fce50f3d5c39c267e) for details.
-4. Dump world state trie at block 4061224. We did this for you :D! [alloc_everything_4061224_final.json](https://drive.google.com/file/d/1k9yopW6F8SyHAR-8JT2hfxptQGT-DqKe/view?usp=sharing)
-5. Import genesis file to your new client
-6. Import block headers and transactions to your new client 
-7. Import transaction receipts to your new client
-8. Import world state trie at block 4061224 to your new client.
+1. Import [optimism-goerli genesis file](https://github.com/testinprod-io/erigon/blob/pcw109550/state-import/state-import/genesis.json) to your new client
+2. Import block headers and transactions to your new client.
+     - We will upload this rlp encoded block info asap.
+3. Import transaction receipts to your new client
+     - We will upload this rlp encoded receipt info asap.
+4. Import world state trie at block 4061224: [alloc_everything_4061224_final.json](https://drive.google.com/file/d/1k9yopW6F8SyHAR-8JT2hfxptQGT-DqKe/view?usp=sharing) to your new client.
 
 You may ask that is it okay not to have world state trie for prebedrock block. You may simply relay the requests to l2geth node. Daisy chain will handle these prebedrock jobs.
 

@@ -58,10 +58,11 @@ All the data export artifacts will be shared asap. You do not have to follow ste
 
 1. Import [optimism-goerli genesis file](https://github.com/testinprod-io/erigon/blob/pcw109550/state-import/state-import/genesis.json) to your new client
 2. Import block headers and transactions to your new client.
-     - We will upload this rlp encoded block info asap.
+     - RLP encoded block: [export_0_4061224](https://drive.google.com/file/d/1z1pGEhy8acPi_U-6Sz0oo_-zJSzU8zb-/view?usp=sharing)
 3. Import transaction receipts to your new client
-     - We will upload this rlp encoded receipt info asap.
-4. Import world state trie at block 4061224: [alloc_everything_4061224_final.json](https://drive.google.com/file/d/1k9yopW6F8SyHAR-8JT2hfxptQGT-DqKe/view?usp=sharing) to your new client.
+     - RLP encoded receipt: [export_receipt_0_4061223](https://drive.google.com/file/d/1QJpv-SNv6I3j9z4FfHzZ3fHlCuFMn8b0/view?usp=sharing)
+     - There is no receipt for block 4061224 because no transaction at block 4061224.
+4. Import world state trie at block 4061224: [alloc_everything_4061224_final.json](https://drive.google.com/file/d/1k9yopW6F8SyHAR-8JT2hfxptQGT-DqKe/view?usp=sharing) to your new client. I wrote [custom import functionality](https://github.com/testinprod-io/erigon/blob/pcw109550/state-import/turbo/app/import.go) for op-erigon to achieve this.
 
 You may ask that is it okay not to have world state trie for prebedrock block. You may simply relay the requests to l2geth node. Daisy chain will handle these prebedrock jobs.
 

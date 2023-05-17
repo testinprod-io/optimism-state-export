@@ -49,20 +49,20 @@ Luckily, here is the `1.39G` json file which captures every info for recontructi
 
 All the data export artifacts will be shared asap. You do not have to follow steps. You can use files that we provided in the [game plan](#game-plan). We followed below steps because op-geth dump functionality is not working at the moment.
 
-1. Initialize your new OP stack execution engine's storage with the [optimism-goerli genesis file](https://github.com/testinprod-io/erigon/blob/pcw109550/state-import/state-import/genesis.json).
+1. Initialize your new OP stack execution engine's storage with the [optimism-goerli genesis file](https://github.com/testinprod-io/op-erigon/blob/pcw109550/state-import/state-import/genesis.json).
 2. Dump block headers and transactions from block number 1 to 4061224 from the archive. This can be done via l2geth's `export` command. RLP encoded file will be created.
 3. Dump transaction receipts from block 1 to 4061224 from the archive. I wrote the custom geth command `export-receipts` to do this. See [here](https://github.com/testinprod-io/optimism/commit/6c675653e5db865415d3260fce50f3d5c39c267e) for details. RLP encoded file will be created.
 4. Dump world state trie at block 4061224. [alloc_everything_4061224_final.json](https://drive.google.com/file/d/1k9yopW6F8SyHAR-8JT2hfxptQGT-DqKe/view?usp=sharing)
 
 ## Game Plan
 
-1. Import [optimism-goerli genesis file](https://github.com/testinprod-io/erigon/blob/pcw109550/state-import/state-import/genesis.json) to your new client
+1. Import [optimism-goerli genesis file](https://github.com/testinprod-io/op-erigon/blob/pcw109550/state-import/state-import/genesis.json) to your new client
 2. Import block headers and transactions to your new client.
      - RLP encoded block: [export_0_4061224](https://drive.google.com/file/d/1z1pGEhy8acPi_U-6Sz0oo_-zJSzU8zb-/view?usp=sharing)
 3. Import transaction receipts to your new client
      - RLP encoded receipt: [export_receipt_0_4061223](https://drive.google.com/file/d/1QJpv-SNv6I3j9z4FfHzZ3fHlCuFMn8b0/view?usp=sharing)
      - There is no receipt for block 4061224 because no transaction at block 4061224.
-4. Import world state trie at block 4061224: [alloc_everything_4061224_final.json](https://drive.google.com/file/d/1k9yopW6F8SyHAR-8JT2hfxptQGT-DqKe/view?usp=sharing) to your new client. I wrote [custom import functionality](https://github.com/testinprod-io/erigon/blob/pcw109550/state-import/turbo/app/import.go) for op-erigon to achieve this.
+4. Import world state trie at block 4061224: [alloc_everything_4061224_final.json](https://drive.google.com/file/d/1k9yopW6F8SyHAR-8JT2hfxptQGT-DqKe/view?usp=sharing) to your new client. I wrote [custom import functionality](https://github.com/testinprod-io/op-erigon/blob/pcw109550/state-import/turbo/app/import.go) for op-erigon to achieve this.
 
 You may ask that is it okay not to have world state trie for prebedrock block. You may simply relay the requests to l2geth node. Daisy chain will handle these prebedrock jobs.
 
